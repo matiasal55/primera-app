@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { View, Text, ScrollView, TextInput, Button } from 'react-native';
-import { formStyle } from '../styles/generalStyles';
+import { View, ScrollView, TextInput, Button } from 'react-native';
+import { formStyle } from '../styles/styles';
 import firebase from '../database/firebase';
+import Spinner from '../components/Spinner';
+import Form from '../components/Form';
 
 const CreateUser = (props) => {
     const [user, setUser] = useState({
@@ -10,6 +11,7 @@ const CreateUser = (props) => {
         email: '',
         phone: '',
     });
+    const [loading, setLoading] = useState(false);
 
     const handleChangeText = (name, value) => {
         setUser({ ...user, [name]: value });
@@ -18,6 +20,7 @@ const CreateUser = (props) => {
     const saveNewUser = async () => {
         if (user.name === '') alert('Please provide a name');
         else {
+            setLoading(true);
             await firebase.db
                 .collection('users')
                 .add(user)
@@ -26,17 +29,13 @@ const CreateUser = (props) => {
         }
     };
 
+    if (loading) {
+        return <Spinner />;
+    }
+
     return (
-        <ScrollView style={formStyle.container}>
-            <View style={formStyle.inputGroup}>
-                <TextInput placeholder='Name User' onChangeText={(value) => handleChangeText('name', value)} />
-            </View>
-            <View style={formStyle.inputGroup}>
-                <TextInput placeholder='Email User' onChangeText={(value) => handleChangeText('email', value)} />
-            </View>
-            <View style={formStyle.inputGroup}>
-                <TextInput placeholder='Phone User' onChangeText={(value) => handleChangeText('phone', value)} />
-            </View>
+        <ScrollView style={formStyle.container} keyboardShouldPersistTaps={'handled'}>
+            <Form values={user} getUser={handleChangeText} />
             <View>
                 <Button title='Save User' onPress={saveNewUser} />
             </View>

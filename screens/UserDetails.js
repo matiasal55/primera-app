@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { View, ScrollView, TextInput, Button, ActivityIndicator, Alert } from 'react-native';
+import Form from '../components/Form';
+import Spinner from '../components/Spinner';
 import firebase from '../database/firebase';
-import { formStyle } from '../styles/generalStyles';
+import { formStyle } from '../styles/styles';
 
 const UserDetails = (props) => {
     const { id } = props.route.params;
     const [user, setUser] = useState({});
     const [loading, setLoading] = useState(true);
 
-    const getUserById = async (id) => {
+    const getDbRef = () => {
         const dbRef = firebase.db.collection('users').doc(id);
+        return dbRef;
+    };
+
+    const getUserById = async () => {
+        const dbRef = getDbRef();
         const doc = await dbRef.get();
         const user = doc.data();
         setUser(user);
@@ -17,7 +24,7 @@ const UserDetails = (props) => {
     };
 
     useEffect(() => {
-        getUserById(id);
+        getUserById();
     }, []);
 
     const handleChangeText = (name, value) => {
@@ -25,13 +32,15 @@ const UserDetails = (props) => {
     };
 
     const updateUser = async () => {
-        const dbRef = firebase.db.collection('users').doc(id);
+        setLoading(true);
+        const dbRef = getDbRef();
         await dbRef.set(user);
         props.navigation.navigate('UserList');
     };
 
     const deleteUser = async () => {
-        const dbRef = firebase.db.collection('users').doc(id);
+        setLoading(true);
+        const dbRef = getDbRef();
         await dbRef.delete();
         props.navigation.navigate('UserList');
     };
@@ -44,24 +53,12 @@ const UserDetails = (props) => {
     };
 
     if (loading) {
-        return (
-            <View>
-                <ActivityIndicator size='large' color='#9e9e9e' />
-            </View>
-        );
+        return <Spinner />;
     }
 
     return (
-        <ScrollView style={formStyle.container}>
-            <View style={formStyle.inputGroup}>
-                <TextInput placeholder='Name User' value={user.name} onChangeText={(value) => handleChangeText('name', value)} />
-            </View>
-            <View style={formStyle.inputGroup}>
-                <TextInput placeholder='Email User' value={user.email} onChangeText={(value) => handleChangeText('email', value)} />
-            </View>
-            <View style={formStyle.inputGroup}>
-                <TextInput placeholder='Phone User' value={user.phone} onChangeText={(value) => handleChangeText('phone', value)} />
-            </View>
+        <ScrollView style={formStyle.container} keyboardShouldPersistTaps={'handled'}>
+            <Form values={user} getUser={handleChangeText} />
             <View>
                 <Button title='Update User' onPress={updateUser} />
                 <Button title='Delete User' color='red' onPress={confirmationAlert} />
