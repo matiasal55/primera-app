@@ -4,7 +4,7 @@ import { View, Text, ScrollView, TextInput, Button } from 'react-native';
 import { formStyle } from '../styles/generalStyles';
 import firebase from '../database/firebase';
 
-const CreateUser = () => {
+const CreateUser = (props) => {
     const [user, setUser] = useState({
         name: '',
         email: '',
@@ -21,8 +21,8 @@ const CreateUser = () => {
             await firebase.db
                 .collection('users')
                 .add(user)
-                .then((res) => alert('Guardado'))
-                .catch((err) => console.log(err));
+                .then((res) => props.navigation.navigate('UserList'))
+                .catch((err) => alert('Hubo un error'));
         }
     };
 
