@@ -4,6 +4,7 @@ import { View, Text, ScrollView, Button } from 'react-native';
 import { styles } from '../styles/generalStyles';
 import firebase from '../database/firebase';
 import { ListItem, Avatar } from 'react-native-elements';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const UserList = (props) => {
     const [users, setUsers] = useState([]);
@@ -26,19 +27,21 @@ const UserList = (props) => {
 
     return (
         <ScrollView>
-            <Button title='Create User' onPress={() => props.navigation.navigate('CreateUser')} />
-            {users.map((user) => {
-                return (
-                    <ListItem key={user.id} onPress={() => props.navigation.navigate('UserDetails', { id: user.id })}>
-                        <ListItem.Chevron />
-                        <Avatar source={{ uri: 'https://picsum.photos/200' }} rounded />
-                        <ListItem.Content>
-                            <ListItem.Title>{user.name}</ListItem.Title>
-                            <ListItem.Subtitle>{user.email}</ListItem.Subtitle>
-                        </ListItem.Content>
-                    </ListItem>
-                );
-            })}
+            <SafeAreaView>
+                <Button title='Create User' onPress={() => props.navigation.navigate('CreateUser')} />
+                {users.map((user) => {
+                    return (
+                        <ListItem key={user.id} onPress={() => props.navigation.navigate('UserDetails', { id: user.id })}>
+                            <ListItem.Chevron />
+                            <Avatar source={{ uri: 'https://picsum.photos/200' }} rounded />
+                            <ListItem.Content>
+                                <ListItem.Title>{user.name}</ListItem.Title>
+                                <ListItem.Subtitle>{user.email}</ListItem.Subtitle>
+                            </ListItem.Content>
+                        </ListItem>
+                    );
+                })}
+            </SafeAreaView>
         </ScrollView>
     );
 };
