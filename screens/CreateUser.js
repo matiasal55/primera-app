@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { View, Text, ScrollView, TextInput, Button } from 'react-native';
 import { formStyle } from '../styles/generalStyles';
+import firebase from '../database/firebase';
 
 const CreateUser = () => {
     const [user, setUser] = useState({
@@ -12,6 +13,17 @@ const CreateUser = () => {
 
     const handleChangeText = (name, value) => {
         setUser({ ...user, [name]: value });
+    };
+
+    const saveNewUser = async () => {
+        if (user.name === '') alert('Please provide a name');
+        else {
+            await firebase.db
+                .collection('users')
+                .add(user)
+                .then((res) => alert('Guardado'))
+                .catch((err) => console.log(err));
+        }
     };
 
     return (
@@ -26,7 +38,7 @@ const CreateUser = () => {
                 <TextInput placeholder='Phone User' onChangeText={(value) => handleChangeText('phone', value)} />
             </View>
             <View>
-                <Button title='Save User' onPress={() => console.log(user)} />
+                <Button title='Save User' onPress={saveNewUser} />
             </View>
         </ScrollView>
     );
