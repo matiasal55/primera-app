@@ -6,6 +6,8 @@
 
 Aplicación de nivel básico basada en un CRUD donde se puede administrar datos de usuarios. Se encuentra programada con React Native junto a Expo y Firestore como base de datos externa.
 
+<hr>
+
 ### Tecnologías usadas:
 
 <div>
@@ -19,6 +21,8 @@ Aplicación de nivel básico basada en un CRUD donde se puede administrar datos 
 -   Expo
 -   Firebase - Firestore
 
+<hr>
+
 ### Comandos a ejecutar:
 
 #### Requisitos previos:
@@ -26,10 +30,20 @@ Aplicación de nivel básico basada en un CRUD donde se puede administrar datos 
 -   Contar con una base de datos de tipo Test en Firebase.
 -   En caso de probar la aplicación en un dispositivo móvil tener instalada Expo Go App. Sino se puede probar en el browser, con las limitaciones pertinentes.
 
-Modo desarrollador:
+1 - Modo desarrollador:
 
 <code>npm start</code>
 
-Modo producción:
+2 - Modo producción:
 
-<code>npm run eject</code>
+<img alt="Android" src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" />
+
+<code>npm run build:android</code>
+
+<img alt="IOS" src="https://img.shields.io/badge/iOS-000000?style=for-the-badge&logo=ios&logoColor=white">
+
+<code>npm run build:android</code>
+
+<hr>
+
+<img alt="GitHub" src="https://img.shields.io/github/license/matiasal55/primera-app?style=for-the-badge">
